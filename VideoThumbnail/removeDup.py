@@ -9,6 +9,7 @@ from skimage.metrics import structural_similarity
 
 def getGreyImgs(Path, greyDir):
     for(j, imgName) in enumerate(os.listdir(Path)):
+        # Get path of image
         imagePath = join(Path, imgName)
 
         # Convert the image to greyscale
@@ -31,19 +32,23 @@ def FindNRemoveGreyDupli(greyDir):
             if ImgCompare == greyImg:
                 pass
             else:
+                # Not same image so we take it for comparision
                 ImgCompareGrey = join(greyDir, ImgCompare)
                 try:
-                    # 
+                    # Open the image in terms of a matrix of rgb
                     FinalSearchedImg = np.array(cv2.imread(searchedImg, cv2.IMREAD_GRAYSCALE))
                     FinalCompareImg = np.array(cv2.imread(ImgCompareGrey, cv2.IMREAD_GRAYSCALE))
+
+                    # Calculate Root-Mean_Square
                     rms = sqrt(mean_squared_error(FinalSearchedImg, FinalCompareImg ))
-                    # h = np.sum((FinalSearchedImg.astype("float") - FinalCompareImg.astype("float")) ** 2)
-                    # h /= float(FinalSearchedImg.shape[0] * FinalSearchedImg.shape[1])
+
+                    # Calculate structural similarity
                     h = structural_similarity(FinalSearchedImg, FinalCompareImg)
 
                 except:
                     continue
                 if h > 0.8 and rms < 3:
+                    # Remove duplicate image
                     os.remove(ImgCompareGrey)
                     print (searchedImg, ImgCompareGrey, h, rms)  
 
@@ -61,10 +66,15 @@ def main():
 
     # Function to grey out the images and store them in greyDir
     getGreyImgs(Path, greyDir)
-    # FindNRemoveGreyDupli(greyDir)
-    # RemoveDupli(greyDir, Path)
 
-    # shutil.rmtree(greyDir)
+    # Function to compare images based on RMS and SSM
+    FindNRemoveGreyDupli(greyDir)
+
+    # Remove duplicate from actual directory
+    RemoveDupli(greyDir, Path)
+
+    # Remove greyscaled images directory
+    shutil.rmtree(greyDir)
 
 
 if __name__ == "__main__":
