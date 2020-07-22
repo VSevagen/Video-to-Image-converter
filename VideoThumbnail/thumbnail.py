@@ -1,5 +1,6 @@
 import cv2
 import os
+
 path = '/home/sevagen/Desktop/Video-to-Image-converter/VideoThumbnail/images'
 vidcap = cv2.VideoCapture('videoplayback.mp4')
 def getFrame(sec):

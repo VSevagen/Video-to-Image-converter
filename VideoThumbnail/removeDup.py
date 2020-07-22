@@ -40,17 +40,17 @@ def FindNRemoveGreyDupli(greyDir):
                     FinalCompareImg = np.array(cv2.imread(ImgCompareGrey, cv2.IMREAD_GRAYSCALE))
 
                     # Calculate Root-Mean_Square
-                    rms = sqrt(mean_squared_error(FinalSearchedImg, FinalCompareImg ))
+                    # rms = sqrt(mean_squared_error(FinalSearchedImg, FinalCompareImg ))
 
                     # Calculate structural similarity
                     h = structural_similarity(FinalSearchedImg, FinalCompareImg)
 
                 except:
                     continue
-                if h > 0.8 and rms < 3:
+                if h > 0.8:
                     # Remove duplicate image
                     os.remove(ImgCompareGrey)
-                    print (searchedImg, ImgCompareGrey, h, rms)  
+                    print (searchedImg, ImgCompareGrey, h)  
 
 def RemoveDupli(greyDir, Path):
     greyImg = os.listdir(greyDir)
@@ -75,7 +75,6 @@ def main():
 
     # Remove greyscaled images directory
     shutil.rmtree(greyDir)
-
 
 if __name__ == "__main__":
     main()
