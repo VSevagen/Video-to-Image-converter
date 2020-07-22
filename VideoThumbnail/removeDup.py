@@ -5,6 +5,7 @@ from os.path import join
 import cv2
 import numpy as np
 import shutil
+from skimage.metrics import structural_similarity
 
 def getGreyImgs(Path, greyDir):
     for(j, imgName) in enumerate(os.listdir(Path)):
@@ -35,14 +36,16 @@ def FindNRemoveGreyDupli(greyDir):
                     # 
                     FinalSearchedImg = np.array(cv2.imread(searchedImg, cv2.IMREAD_GRAYSCALE))
                     FinalCompareImg = np.array(cv2.imread(ImgCompareGrey, cv2.IMREAD_GRAYSCALE))
-                    # rms = sqrt(mean_squared_error(FinalSearchedImg, FinalCompareImg ))
-                    h = np.sum((FinalSearchedImg.astype("float") - FinalCompareImg.astype("float")) ** 2)
-                    h /= float(FinalSearchedImg.shape[0] * FinalSearchedImg.shape[1])
+                    rms = sqrt(mean_squared_error(FinalSearchedImg, FinalCompareImg ))
+                    # h = np.sum((FinalSearchedImg.astype("float") - FinalCompareImg.astype("float")) ** 2)
+                    # h /= float(FinalSearchedImg.shape[0] * FinalSearchedImg.shape[1])
+                    h = structural_similarity(FinalSearchedImg, FinalCompareImg)
+
                 except:
                     continue
-                if h < 500:
+                if h > 0.8 and rms < 3:
                     os.remove(ImgCompareGrey)
-                    print (searchedImg, ImgCompareGrey, h)  
+                    print (searchedImg, ImgCompareGrey, h, rms)  
 
 def RemoveDupli(greyDir, Path):
     greyImg = os.listdir(greyDir)
@@ -58,10 +61,10 @@ def main():
 
     # Function to grey out the images and store them in greyDir
     getGreyImgs(Path, greyDir)
-    FindNRemoveGreyDupli(greyDir)
-    RemoveDupli(greyDir, Path)
+    # FindNRemoveGreyDupli(greyDir)
+    # RemoveDupli(greyDir, Path)
 
-    shutil.rmtree(greyDir)
+    # shutil.rmtree(greyDir)
 
 
 if __name__ == "__main__":
