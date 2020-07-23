@@ -10,7 +10,7 @@ def getFrame(sec):
         cv2.imwrite(os.path.join(path,"image"+str(count)+".jpg"), image) 
     return hasFrames
 sec = 0
-frameRate = 0.5
+frameRate = 2
 count=1
 success = getFrame(sec)
 while success:
