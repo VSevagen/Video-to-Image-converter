@@ -6,7 +6,9 @@ from os.path import join
 
 path = os.getcwd()+"/images"
 os.chdir(path)
-point = (300, 300)
+width = int(input("Enter the width of face: "))
+height = int(input("Enter the height of face: "))
+point = (width, height)
 for(i, image) in enumerate(os.listdir(path)):
     Image = cv2.imread(image)
     gray = cv2.cvtColor(Image, cv2.COLOR_BGR2GRAY)
@@ -17,6 +19,7 @@ for(i, image) in enumerate(os.listdir(path)):
     faces_rects = haar_cascade_face.detectMultiScale(test_image, scaleFactor = 1.1, minNeighbors = 5, minSize = point)
     if len(faces_rects) >= 1:
         os.remove(os.path.join(path, image))
+os.chdir("..")
 
 # for (x,y,w,h) in faces_rects:
 #     cv2.rectangle(Image,(x,y),(x+w,y+h),(255,0,0),2)
