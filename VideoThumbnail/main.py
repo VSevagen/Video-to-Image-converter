@@ -8,6 +8,12 @@ with open("removeDup.py", "rb") as source_file:
     code = compile(source_file.read(), "removeDup.py", "exec")
 exec(code)
 
+facePrompt = int(input("Do you want to remove pictures that have 1 or more faces of a certain dimension 0(No) 1(Yes) >>> "))
+if facePrompt == 1:
+    with open("faceDetection.py", "rb") as source_file:
+        code = compile(source_file.read(), "faceDetection.py", "exec")
+    exec(code)
+
 prompt = int(input("Make a pdf out of the images 0(No) 1(Yes) >>>"))
 if prompt == 1:
     with open("pdfMaker.py", "rb") as source_file:
