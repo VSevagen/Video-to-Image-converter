@@ -8,6 +8,11 @@ with open("removeDup.py", "rb") as source_file:
     code = compile(source_file.read(), "removeDup.py", "exec")
 exec(code)
 
+#Remove duplicates without down-sizing the images
+with open("remove.py", "rb") as source_file:
+    code = compile(source_file.read(), "remove.py", "exec")
+exec(code)
+
 facePrompt = int(input("Do you want to remove pictures that have 1 or more faces of a certain dimension 0(No) 1(Yes) >>> "))
 if facePrompt == 1:
     with open("faceDetection.py", "rb") as source_file:
