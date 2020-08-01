@@ -22,7 +22,8 @@ def getGreyImgs(Path, greyDir):
             cv2.imwrite(os.path.join(greyDir, imgName), resizeImage)
 
 def FindNRemoveGreyDupli(greyDir):
-    for(i, greyImg) in enumerate(os.listdir(greyDir)):
+    fnames = sorted([fname for fname in os.listdir(greyDir) if fname.endswith('.jpg')], key=lambda f: int(f.rsplit(os.path.extsep, 1)[0].rsplit(None,1)[-1]))
+    for(i, greyImg) in enumerate(fnames):
         # Take first image for comparing
         searchedImg = join(greyDir, greyImg)
 
@@ -47,9 +48,9 @@ def FindNRemoveGreyDupli(greyDir):
 
                 except:
                     continue
-                if h > 0.8:
+                if h > 0.9:
                     # Remove duplicate image
-                    os.remove(ImgCompareGrey)
+                    os.remove(searchedImg)
                     print (searchedImg, ImgCompareGrey, h)  
 
 def RemoveDupli(greyDir, Path):
